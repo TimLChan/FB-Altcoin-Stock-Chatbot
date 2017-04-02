@@ -46,7 +46,7 @@ class AltCoinBot(fbchat.Client):
         self.markAsRead(recipient_id) #mark read
         
         if str(author_id) != str(self.uid):
-            chatline = str(message)
+            chatline = str(message).lower()
             
             if chatline.startswith('!stock'):
                     print('Stock request triggered')
@@ -64,8 +64,8 @@ class AltCoinBot(fbchat.Client):
                             respstring = 'Nothing found for ' + stockcode
                         self.send(recipient_id,respstring,message_type=thread_type)
                         
-            elif chatline.startswith('!') and str(message).lower() != '!btcaud':
-                messagecontent = str(message)[1:].lower()
+            elif chatline.startswith('!') and chatline != '!btcaud':
+                messagecontent = chatline[1:]
                 msg = messagecontent.split(' ')[0].upper()
                 
                 if len(msg) > 0:
