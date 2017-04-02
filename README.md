@@ -24,3 +24,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 * Thanks to [fbchat](https://github.com/carpedm20/fbchat) for the great Facebook Chat implementation
 * Uses the [Yahoo! Query Language](https://developer.yahoo.com/yql/)
 * Utilises the [CryptoCompare API](https://www.cryptocompare.com/api/)
+* Thanks [Weidi Zhang](https://github.com/weidizhang/) for providing the YQL url and arguments
