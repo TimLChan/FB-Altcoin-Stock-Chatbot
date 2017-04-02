@@ -47,6 +47,7 @@ class AltCoinBot(fbchat.Client):
         
         if str(author_id) != str(self.uid):
             chatline = str(message)
+            
             if chatline.startswith('!stock'):
                     print('Stock request triggered')
                     messagecontent = chatline.split(' ')
@@ -62,10 +63,11 @@ class AltCoinBot(fbchat.Client):
                         else:
                             respstring = 'Nothing found for ' + stockcode
                         self.send(recipient_id,respstring,message_type=thread_type)
+                        
             elif chatline.startswith('!') and str(message).lower() != '!btcaud':
                 messagecontent = str(message)[1:].lower()
                 msg = messagecontent.split(' ')[0].upper()
-                msg = ''.join(e for e in msg if e.isalnum()).upper()
+                msg = ''.join(e for e in msg if e.isalnum())[:6]
                 if len(msg) > 0:
                     print(msg + ' command triggered')
                     respstring = 'Current ' + msg + ' price: '
