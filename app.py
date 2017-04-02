@@ -1,3 +1,19 @@
+#!/usr/bin/env python
+# -*- coding: UTF-8 -*-
+
+"""
+    FB Altcoin Stock Chatbot
+    ~~~~~~
+    Altcoin and Stock chatbot for Python
+
+"""
+__author__ = 'Tim Chan'
+__email__ = 'github@timc.me'
+__copyright__ = 'Copyright 2017 by Tim Chan'
+__version__ = '1.1'
+__license__ = 'MIT'
+
+
 import fbchat
 import json
 import decimal
@@ -49,6 +65,7 @@ class AltCoinBot(fbchat.Client):
             elif chatline.startswith('!') and str(message).lower() != '!btcaud':
                 messagecontent = str(message)[1:].lower()
                 msg = messagecontent.split(' ')[0].upper()
+                msg = ''.join(e for e in msg if e.isalnum()).upper()
                 if len(msg) > 0:
                     print(msg + ' command triggered')
                     respstring = 'Current ' + msg + ' price: '
