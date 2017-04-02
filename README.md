@@ -10,9 +10,30 @@ Really simple, just copy app.py to whereever you want to run it, edit the `<Emai
 * fbchat `pip install fbchat`
 * Facebook login of some sort, whether this is your actual account or one just for this purpose
 
+
+
+
+## Using the bot
+
+#### Instructions
+
+1. Set the `<Email>` and `<Password>` in app.py
+2. Run `python app.py` (or if you're using Openshift, just do a `git push` and it will autostart)
+3. Find the name of the account you used and start a conversation
+4. Wait for the bot's reply
+ 
+#### Commands
+* `!stock <stockcode>` - Gets the current price and change for the specified stock `e.g. !stock anz.ax`
+* `!<altcoin>` - Gets the current price for the altcode in USD and BTC `e.g. !eth`
+* `!btcaud` - Gets the current price for 1 bitcoin in AUD
+
+## Screenshot
+![](http://i.imgur.com/T0YVCQn.png)
+
+
 ## Authors
 
-* **Tim Chan** 
+* Tim Chan - https://twitter.com/TimLChan
 
 
 ## License
