@@ -67,8 +67,9 @@ class AltCoinBot(fbchat.Client):
             elif chatline.startswith('!') and str(message).lower() != '!btcaud':
                 messagecontent = str(message)[1:].lower()
                 msg = messagecontent.split(' ')[0].upper()
-                msg = ''.join(e for e in msg if e.isalnum())[:6]
+                
                 if len(msg) > 0:
+                    msg = ''.join(e for e in msg if e.isalnum())[:6]
                     print(msg + ' command triggered')
                     respstring = 'Current ' + msg + ' price: '
                     urlbuilder = 'https://min-api.cryptocompare.com/data/price?fsym=' + msg + '&tsyms=USD,BTC'
@@ -84,7 +85,7 @@ class AltCoinBot(fbchat.Client):
                     
                     if 'Response' not in btcchart:
                         if 'USD' in btcchart:
-                            respstring += self.float_to_str(btcchart['USD']) + ' USD'
+                            respstring += '$' + self.float_to_str(btcchart['USD']) + ' USD'
                         if 'BTC' in btcchart:
                             respstring += ' | ' + self.float_to_str(btcchart['BTC']) + ' BTC'
                     else:
