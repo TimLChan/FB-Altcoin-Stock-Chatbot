@@ -10,7 +10,7 @@
 __author__ = 'Tim Chan'
 __email__ = 'github@timc.me'
 __copyright__ = 'Copyright 2017 by Tim Chan'
-__version__ = '1.1'
+__version__ = '1.2'
 __license__ = 'MIT'
 
 
@@ -25,15 +25,16 @@ class AltCoinBot(fbchat.Client):
     httphandler = urllib3.PoolManager()
     urlau = "https://api.independentreserve.com/Public/GetMarketSummary?primaryCurrencyCode=xbt&secondaryCurrencyCode=aud"
     ctx = decimal.Context()
-    ctx.prec = 20
     
     
-    def float_to_str(self,f):
+    def float_to_str(self,f,prec):
         """
         Convert the given float to a string,
         without resorting to scientific notation
         """
         """ Thanks to http://stackoverflow.com/posts/38847691/revisions """
+        f = float(f) #Casting to float cause Poloniex is a string while others are already floats. And float(float) doesn't break anything... yet
+        self.ctx.prec = prec
         d1 = self.ctx.create_decimal(repr(f))
         return format(d1, 'f')
     
@@ -70,34 +71,47 @@ class AltCoinBot(fbchat.Client):
                 
                 if len(msg) > 0:
                     msg = ''.join(e for e in msg if e.isalnum())[:6]
-                    print(msg + ' command triggered')
-                    respstring = 'Current ' + msg + ' price: '
-                    urlbuilder = 'https://min-api.cryptocompare.com/data/price?fsym=' + msg + '&tsyms=USD,BTC'
+
                     if messagecontent.endswith('poloniex'):
-                        if msg == 'BTC':
-                             urlbuilder = 'https://min-api.cryptocompare.com/data/price?fsym=' + msg + '&tsyms=USD&e=Poloniex'
-                        else:
-                            urlbuilder += '&e=Poloniex'
-                        respstring = 'Current ' + msg + ' price (Poloniex): '
-                    
-                    response = self.httphandler.request('GET', urlbuilder)
-                    btcchart = json.loads(response.data.decode('utf-8'))
-                    
-                    if 'Response' not in btcchart:
-                        if 'USD' in btcchart:
-                            respstring += '$' + self.float_to_str(btcchart['USD']) + ' USD'
-                        if 'BTC' in btcchart:
-                            respstring += ' | ' + self.float_to_str(btcchart['BTC']) + ' BTC'
-                    else:
-                        respstring = btcchart['Message']
+                        print(msg + ' command triggered (Poloniex)')
+                        usdtprice = 'USDT_' + msg
+                        btcprice = 'BTC_' + msg
                         
+                        urlbuilder = 'https://poloniex.com/public?command=returnTicker'
+                        
+                        response = self.httphandler.request('GET', urlbuilder)
+                        btcchart = json.loads(response.data.decode('utf-8'))
+                        if usdtprice in btcchart:
+                            if btcprice == 'BTC_BTC':
+                                respstring = 'Current {} price (Poloniex): {} USD ({}% change)'.format(msg, self.float_to_str(btcchart[usdtprice]['last'],8), self.float_to_str(float(btcchart[usdtprice]['percentChange'])*100,4))
+                            else:
+                                respstring = 'Current {} price (Poloniex): {} USD ({}% change) | {} BTC ({}% change)'.format(msg, self.float_to_str(btcchart[usdtprice]['last'],8), self.float_to_str(float(btcchart[usdtprice]['percentChange'])*100,4), self.float_to_str(btcchart[btcprice]['last'],8), self.float_to_str(float(btcchart[btcprice]['percentChange'])*100,4))
+                        
+                        else:
+                            respstring = 'Poloniex does not support {} currently'.format(msg)
+                        
+                    else:
+                        print(msg + ' command triggered')
+                        respstring = 'Current ' + msg + ' price: '
+                        urlbuilder = 'https://min-api.cryptocompare.com/data/price?fsym=' + msg + '&tsyms=USD,BTC'
+                        response = self.httphandler.request('GET', urlbuilder)
+                        btcchart = json.loads(response.data.decode('utf-8'))
+                        
+                        if 'Response' not in btcchart:
+                            if 'USD' in btcchart:
+                                respstring += '$' + self.float_to_str(btcchart['USD'],8) + ' USD'
+                            if 'BTC' in btcchart:
+                                respstring += ' | ' + self.float_to_str(btcchart['BTC'],8) + ' BTC'
+                        else:
+                            respstring = btcchart['Message']
+                            
                     self.send(recipient_id,respstring,message_type=thread_type)
                 
             elif chatline == '!btcaud':
                 print('BTC in AUD triggered')
                 response = self.httphandler.request('GET', self.urlau)
                 btcchart = json.loads(response.data.decode('utf-8'))
-                sendstr = 'Current BTC Price (IndependentReserve): A$' + self.float_to_str(btcchart['LastPrice'])
+                sendstr = 'Current BTC Price (IndependentReserve): A$' + self.float_to_str(btcchart['LastPrice'],8)
                 self.send(recipient_id,sendstr,message_type=thread_type)
                 
             
