@@ -17,6 +17,7 @@ __license__ = 'MIT'
 import fbchat
 import json
 import decimal
+import os
 import urllib3
 urllib3.disable_warnings()
 
@@ -81,12 +82,14 @@ class AltCoinBot(fbchat.Client):
                         
                         response = self.httphandler.request('GET', urlbuilder)
                         btcchart = json.loads(response.data.decode('utf-8'))
-                        if usdtprice in btcchart:
+                        if btcprice in btcchart:
                             if btcprice == 'BTC_BTC':
                                 respstring = 'Current {} price (Poloniex): {} USD ({}% change)'.format(msg, self.float_to_str(btcchart[usdtprice]['last'],8), self.float_to_str(float(btcchart[usdtprice]['percentChange'])*100,4))
                             else:
-                                respstring = 'Current {} price (Poloniex): {} USD ({}% change) | {} BTC ({}% change)'.format(msg, self.float_to_str(btcchart[usdtprice]['last'],8), self.float_to_str(float(btcchart[usdtprice]['percentChange'])*100,4), self.float_to_str(btcchart[btcprice]['last'],8), self.float_to_str(float(btcchart[btcprice]['percentChange'])*100,4))
-                        
+                                if usdtprice in btcchart:
+                                    respstring = 'Current {} price (Poloniex): {} USD ({}% change) | {} BTC ({}% change)'.format(msg, self.float_to_str(btcchart[usdtprice]['last'],8), self.float_to_str(float(btcchart[usdtprice]['percentChange'])*100,4), self.float_to_str(btcchart[btcprice]['last'],8), self.float_to_str(float(btcchart[btcprice]['percentChange'])*100,4))
+                                else:
+                                    respstring = 'Current {} price (Poloniex): {} BTC ({}% change)'.format(msg, self.float_to_str(btcchart[btcprice]['last'],8), self.float_to_str(float(btcchart[btcprice]['percentChange'])*100,4))
                         else:
                             respstring = 'Poloniex does not support {} currently'.format(msg)
                         
@@ -116,5 +119,5 @@ class AltCoinBot(fbchat.Client):
                 
             
 
-bot = AltCoinBot("<Email>", "<Password>")
+bot = AltCoinBot(os.environ['Email'], os.environ['Password'])
 bot.listen()
