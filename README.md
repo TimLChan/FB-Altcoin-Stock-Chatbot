@@ -2,7 +2,7 @@
 A slightly lengthy bot to get Stocks and Altcoin prices. Uses fbchat and python.
 
 ## Getting Started
-Really simple, just copy app.py to whereever you want to run it, edit the `<Email>` and `<Password>` fields, then run it using `python app.py`. That or just git push it to openshift. Whatever floats your boat.
+Really simple, just copy app.py to whereever you want to run it, add two environment variables Email and Password, then run it using `python app.py`. That or just git push it to openshift. Whatever floats your boat.
 
 ### Prerequisites
 
@@ -17,7 +17,7 @@ Really simple, just copy app.py to whereever you want to run it, edit the `<Emai
 
 #### Instructions
 
-1. Set the `<Email>` and `<Password>` in app.py
+1. Run the command `rhc env set Email=<Your Email> Password=<Your Password> -a <App Name>` in CMD for Openshift. Heroku is slightly different.
 2. Run `python app.py` (or if you're using Openshift, just do a `git push` and it will autostart)
 3. Find the name of the account you used and start a conversation
 4. Wait for the bot's reply
