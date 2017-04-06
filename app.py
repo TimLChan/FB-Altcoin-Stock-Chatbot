@@ -10,12 +10,13 @@
 __author__ = 'Tim Chan'
 __email__ = 'github@timc.me'
 __copyright__ = 'Copyright 2017 by Tim Chan'
-__version__ = '1.2'
+__version__ = '1.3'
 __license__ = 'MIT'
 
 
 import fbchat
 import json
+import random
 import decimal
 import os
 import urllib3
@@ -53,19 +54,30 @@ class AltCoinBot(fbchat.Client):
             if chatline.startswith('!stock'):
                     print('Stock request triggered')
                     messagecontent = chatline.split(' ')
-                    if messagecontent[1] and messagecontent[1].replace('.', '').isalnum():
-                        stockcode = messagecontent[1].upper()[:8]
+                    if messagecontent[1] and messagecontent[1].translate(str.maketrans('', '', '!-:.')).isalnum():
+                        stockcode = messagecontent[1].upper()[:10]
                         respstring = ''
                         url = 'http://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20yahoo.finance.quotes%20where%20symbol%20in%20(%22' + stockcode + '%22)&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys&format=json'
                         response = self.httphandler.request('GET', url)
                         stockchart = json.loads(response.data.decode('utf-8'))
-                        stockres = stockchart['query']['results']['quote']
-                        if stockres['Ask']:
-                            respstring = '{} ({}) Price: ${} | Change: ${} ({})'.format(stockres['Name'], stockres['Symbol'], stockres['LastTradePriceOnly'], stockres['Change'], stockres['ChangeinPercent'])                            
+                        if stockchart['query']['count'] != 0:
+                            stockres = stockchart['query']['results']['quote']
+                            if stockres['Ask']:
+                                respstring = '{} ({}) Price: ${} | Change: ${} ({})'.format(stockres['Name'], stockres['Symbol'], stockres['LastTradePriceOnly'], stockres['Change'], stockres['ChangeinPercent'])   
+                            else:
+                                respstring = 'Nothing found for ' + stockcode
                         else:
                             respstring = 'Nothing found for ' + stockcode
-                        self.send(recipient_id,respstring,message_type=thread_type)
                         
+                        self.send(recipient_id,respstring,message_type=thread_type)
+             
+            elif chatline.startswith("!decide"):
+                decisions = chatline[7:].split(',')
+                kinda_random = random.SystemRandom()
+                sendstr = 'Decision: {}'.format(kinda_random.choice(decisions).strip())
+                self.send(recipient_id,sendstr,message_type=thread_type)
+            
+            
             elif chatline.startswith('!') and chatline != '!btcaud':
                 messagecontent = chatline[1:]
                 msg = messagecontent.split(' ')[0].upper()
@@ -110,6 +122,7 @@ class AltCoinBot(fbchat.Client):
                             
                     self.send(recipient_id,respstring,message_type=thread_type)
                 
+
             elif chatline == '!btcaud':
                 print('BTC in AUD triggered')
                 response = self.httphandler.request('GET', self.urlau)
