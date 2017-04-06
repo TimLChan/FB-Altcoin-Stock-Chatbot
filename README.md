@@ -25,7 +25,8 @@ Really simple, just copy app.py to whereever you want to run it, add two environ
 #### Commands
 * `!stock <stockcode>` - Gets the current price and change for the specified stock `e.g. !stock anz.ax`
 * `!<altcoin>` - Gets the current price for the altcode in USD and BTC `e.g. !eth`
-* `!btcaud` - Gets the current price for 1 bitcoin in AUD
+* `!btcaud` - Gets the current price for 1 bitcoin in AUD `e.g. !btcaud`
+* `!decide <option 1>,<option 2>,<option n> - Make a decision for you 'e.g. !decide Pancakes, Cereal`
 
 ## Screenshot
 ![](http://i.imgur.com/T0YVCQn.png)
