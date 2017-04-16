@@ -10,7 +10,7 @@
 __author__ = 'Tim Chan'
 __email__ = 'github@timc.me'
 __copyright__ = 'Copyright 2017 by Tim Chan'
-__version__ = '1.3'
+__version__ = '1.3.1'
 __license__ = 'MIT'
 
 
@@ -76,7 +76,13 @@ class AltCoinBot(fbchat.Client):
                 kinda_random = random.SystemRandom()
                 sendstr = 'Decision: {}'.format(kinda_random.choice(decisions).strip())
                 self.send(recipient_id,sendstr,message_type=thread_type)
-            
+           
+            elif chatline.startswith('!math '):
+                print('Calculation Triggered')
+                messagecontent = chatline[6:]
+                if messagecontent.translate(str.maketrans('', '', ' +-*/')).isnumeric():
+                    respstring = eval(messagecontent)
+                    self.send(recipient_id,respstring,message_type=thread_type)            
             
             elif chatline.startswith('!') and chatline != '!btcaud':
                 messagecontent = chatline[1:]
