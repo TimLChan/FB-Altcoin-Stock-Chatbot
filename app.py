@@ -85,7 +85,7 @@ class AltCoinBot(fbchat.Client):
                     try:
                         respstring = 'Result: ' + self.float_to_str(eval(messagecontent),8)
                     except:
-                        resp = 'Number too big :('
+                        respstring = 'Number too big :('
                     self.send(recipient_id,respstring,message_type=thread_type)          
             
             elif chatline.startswith('!') and chatline != '!btcaud':
