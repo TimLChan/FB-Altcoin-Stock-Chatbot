@@ -80,9 +80,13 @@ class AltCoinBot(fbchat.Client):
             elif chatline.startswith('!math '):
                 print('Calculation Triggered')
                 messagecontent = chatline[6:]
-                if messagecontent.translate(str.maketrans('', '', ' +-*/')).isnumeric():
-                    respstring = eval(messagecontent)
-                    self.send(recipient_id,respstring,message_type=thread_type)            
+                if messagecontent.translate(str.maketrans('', '', ' +-*/^')).isnumeric():
+                    messagecontent = messagecontent.replace('^','**')
+                    try:
+                        respstring = 'Result: ' + self.float_to_str(eval(messagecontent),8)
+                    except:
+                        resp = 'Number too big :('
+                    self.send(recipient_id,respstring,message_type=thread_type)          
             
             elif chatline.startswith('!') and chatline != '!btcaud':
                 messagecontent = chatline[1:]
