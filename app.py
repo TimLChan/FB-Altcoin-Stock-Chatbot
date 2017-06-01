@@ -122,7 +122,7 @@ class AltCoinBot(fbchat.Client):
     
     def anti_gyazo(self, url):
         newurl = re.search('http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', url)
-        newurl = newurl.replace("gyazo.com","i.gyazo.com")
+        newurl = newurl.urls.group.replace("gyazo.com","i.gyazo.com")
         newurl += ".png"
         return newurl
         
