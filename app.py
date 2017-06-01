@@ -122,9 +122,10 @@ class AltCoinBot(fbchat.Client):
     
     def anti_gyazo(self, url):
         newurl = re.search('http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', url)
-        newurl = newurl.urls.group.replace("gyazo.com","i.gyazo.com")
+        newurl = newurl.group()
+        newurl = newurl.replace("gyazo.com","i.gyazo.com")
         newurl += ".png"
-        return newurl
+        return 'URL for mobile users: ' + newurl
         
     def on_message_new(self, mid, author_id, message, metadata, recipient_id, thread_type):
         self.markAsDelivered(recipient_id, mid) #mark delivered
