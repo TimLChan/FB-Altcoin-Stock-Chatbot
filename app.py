@@ -116,7 +116,7 @@ class AltCoinBot(fbchat.Client):
         self.ctx.prec = prec
         d1 = self.ctx.create_decimal(repr(f))
         return format(d1, 'f')
-    
+    #This function will need to change, yahoo API for finance has been removed
     def check_stock(self, stockcode):
         url = 'http://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20yahoo.finance.quotes%20where%20symbol%20in%20(%22' + stockcode + '%22)&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys&format=json'
         response = self.httphandler.request('GET', url)
@@ -199,7 +199,7 @@ class AltCoinBot(fbchat.Client):
 
         if str(author_id) != str(self.uid):
             chatline = str(message).lower()
-            
+            ''' Disable stock command
             if chatline.startswith('!stock'):
                     print('Stock request triggered')
                     messagecontent = chatline.split(' ')
@@ -207,7 +207,7 @@ class AltCoinBot(fbchat.Client):
                         stockcode = messagecontent[1].upper()[:10]
                         respstring = self.check_stock(stockcode)
                         self.sendMessage(respstring,thread_id=thread_id,thread_type=thread_type)
-             
+            ''' 
             elif chatline.startswith("!decide"):
                 decisions = chatline[7:].split(',')
                 kinda_random = random.SystemRandom()
