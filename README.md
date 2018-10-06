@@ -1,5 +1,8 @@
 # FB-Altcoin-Stock-Chatbot
-A slightly lengthy bot to get Stocks and Altcoin prices. Uses fbchat and python. #CURRENT COMPATIBLE WITH ONLY FBCHAT < 1.0
+A slightly lengthy bot to get Stocks and Altcoin prices. Uses fbchat and python.
+
+# CURRENTY COMPATIBLE WITH ONLY FBCHAT < 1.0. This will be fixed shortly with a new update.
+
 
 ## Getting Started
 Really simple, just copy app.py to whereever you want to run it, add two environment variables Email and Password, then run it using `python app.py`. That or just git push it to openshift. Whatever floats your boat.
@@ -10,6 +13,7 @@ Really simple, just copy app.py to whereever you want to run it, add two environ
 * fbchat `pip install fbchat`
 * Facebook login of some sort, whether this is your actual account or one just for this purpose
 
+Note: If you have trouble logging into Facebook via fbchat, make sure the server/IP you are logging in from has already been whitelisted. Tweak the user-agent to your current browser's useragent, and try to log in using that IP first.
 
 
 
