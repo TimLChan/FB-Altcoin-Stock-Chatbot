@@ -3,6 +3,9 @@ A slightly lengthy bot to get Stocks and Altcoin prices. Uses fbchat and python.
 
 # CURRENTY COMPATIBLE WITH ONLY FBCHAT < 1.0. This will be fixed shortly with a new update.
 
+## ToDo
+- Remove legacy Yahoo! API from bot
+
 
 ## Getting Started
 Really simple, just copy app.py to whereever you want to run it, add two environment variables Email and Password, then run it using `python app.py`. That or just git push it to openshift. Whatever floats your boat.
