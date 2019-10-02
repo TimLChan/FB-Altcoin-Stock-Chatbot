@@ -116,17 +116,17 @@ class AltCoinBot(fbchat.Client):
         self.ctx.prec = prec
         d1 = self.ctx.create_decimal(repr(f))
         return format(d1, 'f')
-    #This function will need to change, yahoo API for finance has been removed
+
     def check_stock(self, stockcode):
-        url = 'http://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20yahoo.finance.quotes%20where%20symbol%20in%20(%22' + stockcode + '%22)&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys&format=json'
+        url = 'https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol={}&apikey=<YOUR API KEY HERE>'.format(stockcode)
         response = self.httphandler.request('GET', url)
         stockchart = json.loads(response.data.decode('utf-8'))
-        if stockchart['query']['count'] != 0:
-            stockres = stockchart['query']['results']['quote']
-            if stockres['Ask']:
-                return '{} ({}) Price: ${} | Change: ${} ({})'.format(stockres['Name'], stockres['Symbol'], stockres['LastTradePriceOnly'], stockres['Change'], stockres['ChangeinPercent'])   
-            else:
-                return 'Nothing found for ' + stockcode
+
+        if 'Global Quote' in stockchart:
+            stockres = stockchart['Global Quote']
+            currprice = '{0:.2f}'.format(float(stockres['05. price']))
+            return '{} Price: ${} | Change: ${} ({})'.format(stockres['01. symbol'], currprice, self.float_to_str(float(stockres['09. change']),2), stockres['10. change percent'])
+
         else:
             return 'Nothing found for ' + stockcode
             
