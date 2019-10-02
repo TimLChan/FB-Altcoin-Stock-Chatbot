@@ -1,10 +1,11 @@
 # FB-Altcoin-Stock-Chatbot
 A slightly lengthy bot to get Stocks and Altcoin prices. Uses fbchat and python.
 
-# CURRENTY COMPATIBLE WITH ONLY FBCHAT < 1.0. This will be fixed shortly with a new update.
+## Currently being rewritten for newest fbchat
 
 ## ToDo
 - Remove legacy Yahoo! API from bot
+- Use Alphavantage API for stock checking
 
 
 ## Getting Started
