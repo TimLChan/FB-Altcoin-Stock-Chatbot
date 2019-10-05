@@ -9,7 +9,7 @@
 """
 __author__ = 'Tim Chan'
 __email__ = 'github@timc.me'
-__copyright__ = 'Copyright 2017 by Tim Chan'
+__copyright__ = 'Copyright 2019 by Tim Chan'
 __version__ = '1.4'
 __license__ = 'MIT'
 
@@ -24,6 +24,7 @@ import threading
 import urllib3
 import re
 import datetime
+import settings as settings
 from pickle import dump, load
 urllib3.disable_warnings()
 from wsgiref.simple_server import make_server, WSGIRequestHandler
@@ -58,7 +59,6 @@ class AltCoinBot(fbchat.Client):
         print(response)
         try:
             self.session_cookies = load(open("session_cookie.json", 'rb'))
-            #self.session_cookies = json.load( open("session_cookie.json", "rb") )
             print("There is a cookie file!")
             fbchat.Client.__init__(self,email, password, user_agent, max_tries=5, session_cookies=self.session_cookies)
         except:
@@ -69,8 +69,6 @@ class AltCoinBot(fbchat.Client):
         
         global cmcarray
         cmcarray = self.load_cmc()
-        
-        #
         
         try:
             self.session_cookies = self.getSession()
@@ -116,17 +114,17 @@ class AltCoinBot(fbchat.Client):
         self.ctx.prec = prec
         d1 = self.ctx.create_decimal(repr(f))
         return format(d1, 'f')
-    #This function will need to change, yahoo API for finance has been removed
+        
     def check_stock(self, stockcode):
-        url = 'http://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20yahoo.finance.quotes%20where%20symbol%20in%20(%22' + stockcode + '%22)&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys&format=json'
+        url = 'https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol={}&apikey={}'.format(stockcode, settings.alphavantagekey)
         response = self.httphandler.request('GET', url)
         stockchart = json.loads(response.data.decode('utf-8'))
-        if stockchart['query']['count'] != 0:
-            stockres = stockchart['query']['results']['quote']
-            if stockres['Ask']:
-                return '{} ({}) Price: ${} | Change: ${} ({})'.format(stockres['Name'], stockres['Symbol'], stockres['LastTradePriceOnly'], stockres['Change'], stockres['ChangeinPercent'])   
-            else:
-                return 'Nothing found for ' + stockcode
+
+        if 'Global Quote' in stockchart:
+            stockres = stockchart['Global Quote']
+            currprice = '{0:.2f}'.format(float(stockres['05. price']))
+            return '{} Price: ${} | Change: ${} ({})'.format(stockres['01. symbol'], currprice, self.float_to_str(float(stockres['09. change']),2), stockres['10. change percent'])
+
         else:
             return 'Nothing found for ' + stockcode
             
@@ -147,7 +145,7 @@ class AltCoinBot(fbchat.Client):
         
     def get_captchacredit(self):
         respstring = 'Current 2Captcha balance: $'
-        urlbuilder = 'http://2captcha.com/res.php?key=< YOUR API KEY HERE>&action=getbalance'
+        urlbuilder = 'http://2captcha.com/res.php?key={}&action=getbalance'.format(settings.twocaptchakey)
         response = self.httphandler.request('GET', urlbuilder)
         respstring += response.data.decode('utf-8')
         return respstring
@@ -292,7 +290,7 @@ thread = threading.Thread(target = httpd.serve_forever)
 thread.start()
 
 #Now actually start the bot
-bot = AltCoinBot(os.environ['Email'], os.environ['Password'],"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.113 Safari/537.36")
+bot = AltCoinBot(os.environ['Email'], os.environ['Password'],settings.useragent)
 while True:
     try:
         bot.listen()
