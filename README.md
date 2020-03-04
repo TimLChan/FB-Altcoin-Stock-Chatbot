@@ -1,39 +1,54 @@
-# FB-Altcoin-Stock-Chatbot
-A slightly lengthy bot to get Stocks and Altcoin prices. Uses fbchat and python.
+# FB Altcoin Stock Chatbot
+Random FB Altcoin/Stock/Trigger chatbot. Probably does what it's supposed to do.
 
-# CURRENTY COMPATIBLE WITH ONLY FBCHAT < 1.0. This will be fixed shortly with a new update.
+~~CURRENTLY COMPATIBLE WITH ONLY FBCHAT < 1.0. This will be fixed shortly with a new update.~~
+
+Compatible with the latest FBChat
 
 ## ToDo
-- Remove legacy Yahoo! API from bot
+- Move main app.py from urllib3 to requests
+- Add Currency Conversion
+- Add Heroku instructions
+- Fix Math function
+- Make admin access configurable for adding commands
 
 
 ## Getting Started
-Really simple, just copy app.py to whereever you want to run it, add two environment variables Email and Password, then run it using `python app.py`. That or just git push it to openshift. Whatever floats your boat.
-
 ### Prerequisites
 
-* Some version of Python
-* fbchat `pip install fbchat`
+* Some version of Python3
+* fbchat, requests, urllib3 `pip install -r requirements.txt`
 * Facebook login of some sort, whether this is your actual account or one just for this purpose
 
-Note: If you have trouble logging into Facebook via fbchat, make sure the server/IP you are logging in from has already been whitelisted. Tweak the user-agent to your current browser's useragent, and try to log in using that IP first.
+### Usage
+1. `git clone` this repo
+2. Rename `settings/settings_template.py` to `settings/settings.py` and fill in blank information
+3. `pip install -r requirements.txt` to get requirements
+4. Run with `python app.py`
+
+
+Note: I suggest not using your main Facebook account, but have a separate account set up for this purpose. If you are planning to run this on a service without a fixed IP (such as Heroku), Please log in first, copy the useragent of your browser and the relevant cookies for facebook.com to avoid getting checkpointed.
 
 
 
 ## Using the bot
 
-#### Instructions
+#### Admin ID Setup
+The ability to delete commands are only available for admins of the this chatbot. To set admins, find the user's facebook ID and add them as comma separated values in `adminfbids` variable in `settings/settings.py`
 
-1. Run the command `rhc env set Email=<Your Email> Password=<Your Password> -a <App Name>` in CMD for Openshift. Heroku is slightly different.
-2. Run `python app.py` (or if you're using Openshift, just do a `git push` and it will autostart)
-3. Find the name of the account you used and start a conversation
-4. Wait for the bot's reply
- 
+
+#### Functionality
+* Get stocks (via Alphavantage)
+* Get Bitcoin/Altcoins (via CoinMarketCap)
+* Get time from a timezone
+* Check 2captcha credits
+* Respond to triggers set by users
+
+
 #### Commands
-* `!stock <stockcode>` - Gets the current price and change for the specified stock `e.g. !stock anz.ax`
-* `!<altcoin>` - Gets the current price for the altcode in USD and BTC `e.g. !eth`
-* `!btcaud` - Gets the current price for 1 bitcoin in AUD `e.g. !btcaud`
-* `!decide <option 1>,<option 2>,<option n>` - Make a decision for you 'e.g. !decide Pancakes, Cereal`
+* `!commands` - Return the command list
+* `!addcmd <command> <response>` - to add a basic text/emoji response
+* `!delcmd <command>` - to delete a command
 
 ## Screenshot
 ![](http://i.imgur.com/T0YVCQn.png)
@@ -51,6 +66,5 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## Acknowledgments
 
 * Thanks to [fbchat](https://github.com/carpedm20/fbchat) for the great Facebook Chat implementation
-* Uses the [Yahoo! Query Language](https://developer.yahoo.com/yql/)
 * Utilises the [CryptoCompare API](https://www.cryptocompare.com/api/)
 * Thanks [Weidi Zhang](https://github.com/weidizhang/) for providing the YQL url and arguments
