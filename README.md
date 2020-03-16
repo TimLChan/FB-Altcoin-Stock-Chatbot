@@ -12,7 +12,6 @@ Compatible with the latest FBChat
 - Fix Math function
 - Make admin access configurable for adding commands
 
-
 ## Getting Started
 ### Prerequisites
 
