@@ -35,7 +35,7 @@ class AltCoinBot(fbchat.Client):
 
     def __init__(self, email, password, user_agent=None, logging_level=logging.ERROR):
         self.iphandler = requests.Session()
-        response = self.self.iphandler.get("http://ipv4.icanhazip.com").text
+        response = self.iphandler.get("http://ipv4.icanhazip.com").text
         helper.logmessage('Current IP: ' + response)
         try:
             self.session_cookies = load(open("session_cookie.json", 'rb'))
