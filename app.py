@@ -10,14 +10,14 @@
 __author__ = 'Tim Chan'
 __email__ = 'github@timc.me'
 __copyright__ = 'Copyright 2020 by Tim Chan'
-__version__ = '1.5'
+__version__ = '2.0'
 __license__ = 'MIT'
 
 
 import fbchat
 import os
 import threading
-import urllib3
+import requests
 from pickle import dump, load
 import logging
 
@@ -29,15 +29,13 @@ import plugins.simplereply as Reply
 import plugins.misc as Misc
 
 
-urllib3.disable_warnings()
-
 #Subclass fbchat.Client and override required methods
 class AltCoinBot(fbchat.Client):
-    httphandler = urllib3.PoolManager()
     session_cookies = {}
 
     def __init__(self, email, password, user_agent=None, logging_level=logging.ERROR):
-        response = self.httphandler.request('GET', "http://ipv4.icanhazip.com").data.decode('utf-8')
+        self.iphandler = requests.Session()
+        response = self.self.iphandler.get("http://ipv4.icanhazip.com").text
         helper.logmessage('Current IP: ' + response)
         try:
             self.session_cookies = load(open("session_cookie.json", 'rb'))

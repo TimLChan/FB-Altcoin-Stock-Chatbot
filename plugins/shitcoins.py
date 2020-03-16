@@ -10,7 +10,7 @@
 __author__ = 'Tim Chan'
 __email__ = 'github@timc.me'
 __copyright__ = 'Copyright 2020 by Tim Chan'
-__version__ = '1.5'
+__version__ = '2.0'
 __license__ = 'MIT'
 
 
@@ -42,9 +42,11 @@ class Shitcoin(object):
     def get_cmcaltcoin(self, token):
         helper.logmessage('Shitcoin Triggered')
         try:
-            response = self.shitcoinrequests.get(config.cmcapi.format(str(self.cmcarray[token.upper()])))
+            self.headers = {'X-CMC_PRO_API_KEY': config.cmcapikey}
+            self.cmcid = str(self.cmcarray[token.upper()])
+            response = self.shitcoinrequests.get(config.cmcapi.format(self.cmcid ), headers=self.headers)
             cmcres = response.json()
-            respstring = 'Current {} price: {} USD ({}% change) | {} BTC'.format(cmcres["data"]["website_slug"].capitalize(), helper.float_to_str(cmcres["data"]["quotes"]["USD"]["price"], 10), cmcres["data"]["quotes"]["USD"]["percent_change_24h"], helper.float_to_str(cmcres["data"]["quotes"]["BTC"]["price"], 8))
+            respstring = 'Current {} price: {} USD ({}% change)'.format(cmcres["data"][self.cmcid]["name"].capitalize(), helper.float_to_str(cmcres["data"][self.cmcid]["quote"]["USD"]["price"], 10), cmcres["data"][self.cmcid]["quote"]["USD"]["percent_change_24h"])
         except:
             respstring = ('Nothing found for ' + token)
         return respstring

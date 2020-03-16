@@ -5,8 +5,8 @@ Random FB Altcoin/Stock/Trigger chatbot. Probably does what it's supposed to do.
 
 Compatible with the latest FBChat
 
-## ToDo
-- Move main app.py from urllib3 to requests
+## Todo
+- ~~Move main app.py from urllib3 to requests~~ Done
 - Add Currency Conversion
 - Add Heroku instructions
 - Fix Math function
@@ -62,6 +62,12 @@ The ability to delete commands are only available for admins of the this chatbot
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
+
+## Changelog
+
+#### 16 March 2020 - Version 2.0
+* Update `shitcoins.py` to use new Coinmarketcap API
+* Remove use of `urllib3` for app.py
 
 ## Acknowledgments
 

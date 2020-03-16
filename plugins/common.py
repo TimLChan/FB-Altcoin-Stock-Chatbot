@@ -1,3 +1,13 @@
+#!/usr/bin/env python
+# -*- coding: UTF-8 -*-
+
+"""
+    FB Chatbot - Common
+    ~~~~~~
+    Functionality shared across plugins is located here
+
+"""
+
 import decimal
 import re
 from datetime import datetime

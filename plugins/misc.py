@@ -11,7 +11,7 @@
 __author__ = 'Tim Chan'
 __email__ = 'github@timc.me'
 __copyright__ = 'Copyright 2020 by Tim Chan'
-__version__ = '1.5'
+__version__ = '2.0'
 __license__ = 'MIT'
 
 
