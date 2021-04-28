@@ -36,7 +36,7 @@ class Stocks(object):
         response = self.stockrequests.get(url)
         stockchart = response.json()
 
-        if 'Global Quote' in stockchart:
+        if 'Global Quote' in stockchart and '05. price' in stockchart:
             stockres = stockchart['Global Quote']
             currprice = '{0:.2f}'.format(float(stockres['05. price']))
             respstring = '{} Price: ${} | Change: ${} ({})'.format(stockres['01. symbol'], currprice, helper.float_to_str(float(stockres['09. change']),2), stockres['10. change percent'])
