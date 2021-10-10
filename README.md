@@ -1,12 +1,9 @@
 # FB Altcoin Stock Chatbot
 Random FB Altcoin/Stock/Trigger chatbot. Probably does what it's supposed to do.
 
-~~CURRENTLY COMPATIBLE WITH ONLY FBCHAT < 1.0. This will be fixed shortly with a new update.~~
-
 Compatible with the latest FBChat
 
 ## Todo
-- ~~Move main app.py from urllib3 to requests~~ Done
 - Add Currency Conversion
 - Add Heroku instructions
 - Fix Math function
@@ -16,7 +13,7 @@ Compatible with the latest FBChat
 ### Prerequisites
 
 * Some version of Python3
-* fbchat, requests, urllib3 `pip install -r requirements.txt`
+* fbchat, requests, urllib3 - Install using `pip install -r requirements.txt`
 * Facebook login of some sort, whether this is your actual account or one just for this purpose
 
 ### Usage
@@ -27,7 +24,6 @@ Compatible with the latest FBChat
 
 
 Note: I suggest not using your main Facebook account, but have a separate account set up for this purpose. If you are planning to run this on a service without a fixed IP (such as Heroku), Please log in first, copy the useragent of your browser and the relevant cookies for facebook.com to avoid getting checkpointed.
-
 
 
 ## Using the bot
