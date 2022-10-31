@@ -10,15 +10,15 @@
 
 __author__ = 'Tim Chan'
 __email__ = 'github@timc.me'
-__copyright__ = 'Copyright 2020 by Tim Chan'
+__copyright__ = 'Copyright 2022 by Tim Chan'
 __version__ = '2.0'
 __license__ = 'MIT'
 
 
 import json
-import requests
 import random
 import datetime
+import re 
 
 import settings.settings as config
 import plugins.common as helper
@@ -26,7 +26,6 @@ import plugins.common as helper
 class Misc(object):
 
     def __init__(self):
-        self.miscrequests = requests.Session()
         helper.logmessage('Loaded Misc plugin')
 
     def decide(self, message):
@@ -37,22 +36,21 @@ class Misc(object):
 
     def get_captchacredit(self):
         respstring = 'Current 2Captcha balance: $'
-        response = self.miscrequests.get(config.twocaptchaapi.format(config.twocaptchakey))
+        response = helper.sendget(config.twocaptchaapi.format(config.twocaptchakey))
         respstring += response.text
         return respstring
 
     def calculate(self, message):
-        # messagecontent = chatline[6:]
-        # if messagecontent.translate(str.maketrans('', '', ' +-*/.^')).isnumeric():
-        #     messagecontent = messagecontent.replace('^','**')
-        #     try:
-        #         respstring = 'Result: ' + self.float_to_str(eval(messagecontent),8)
-        #     except Exception as err:
-        #         helper.logmessage(err)
-        #         respstring = 'Number too big :('
-        #     #respstring = 'BAD JOHNNY'
-        #     self.sendMessage(respstring,thread_id=thread_id,thread_type=thread_type)
-        return 'Calculator dead!! THANKS JOHNNY'
+        parsedmsg = helper.parsemessage(message)
+        equation = re.sub(r'[^\d\.+^\-\/\*]+', '', parsedmsg)
+        try:
+            if len(equation) < 3:
+                raise ValueError
+            encodeddata = helper.urlsafe(equation)
+            answer = helper.sendget(config.mathapi.format(encodeddata))
+            return '{} = {}'.format(parsedmsg, answer.text)
+        except:
+            return 'BAD INPUT WTF'
 
     def get_time(self, message):
         try:
