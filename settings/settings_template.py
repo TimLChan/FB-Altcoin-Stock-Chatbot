@@ -42,3 +42,6 @@ alertids = {
 }
 
 alertcooldown = 3600
+
+# Math API
+mathapi = 'https://api.mathjs.org/v4/?expr={}'
