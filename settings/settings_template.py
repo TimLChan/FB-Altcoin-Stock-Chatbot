@@ -21,7 +21,7 @@ alphavantagekey = ''
 twocaptchakey = ''
 twocaptchaapi = 'http://2captcha.com/res.php?key={}&action=getbalance'
 
-#Australian Exchange pricings for BTC. No longer user
+#Australian Exchange pricings for BTC. No longer used
 indepreserveapi = 'https://api.independentreserve.com/Public/GetMarketSummary?primaryCurrencyCode=xbt&secondaryCurrencyCode=aud'
 acxapi = 'https://acx.io/api/v2/tickers/btcaud.json'
 
@@ -37,3 +37,8 @@ password = ''
 useragent = ''
 
 adminfbids = [''] #array of Facebook IDs
+
+alertids = {
+}
+
+alertcooldown = 3600
