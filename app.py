@@ -99,7 +99,7 @@ class AltCoinBot(fbchat.Client):
 
             elif chatline.startswith('!addcmd') and len(chatline.split(' ')) > 1:
                 helper.logmessage('Adding Command')
-                respstring = self.simplereply.add_command(str(message_object.text))
+                respstring = self.simplereply.add_command(message_object.author, str(message_object.text))
 
             elif chatline.startswith('!delcmd') and len(chatline.split(' ')) > 1:
                 helper.logmessage('Deleting Command')

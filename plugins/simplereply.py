@@ -9,8 +9,8 @@
 """
 __author__ = 'Tim Chan'
 __email__ = 'github@timc.me'
-__copyright__ = 'Copyright 2020 by Tim Chan'
-__version__ = '2.0'
+__copyright__ = 'Copyright 2021 by Tim Chan'
+__version__ = '2.1'
 __license__ = 'MIT'
 
 
@@ -36,25 +36,37 @@ class SimnpleReply(object):
             except EOFError:
                 self.responses = {}
 
-    def add_command(self, message):
-        try:
-            messagesplit = helper.parsemessage(message).split(' ')
-            command = str(messagesplit[0]).lower()
+    def add_command(self, fbid, message):
+        commandmsg = "fbid: {} | Command: {}".format(fbid, message.replace("\n", "\\n"))
+        with open('commandlog.log', 'a') as f:
+            f.write(commandmsg + "\n")
+        if fbid not in config.bannedfbids:
+            try:
+                messagesplit = helper.parsemessage(message).split(' ')
+                command = str(messagesplit[0]).lower()
+                command = "".join(filter(str.isalnum, command))
 
-            if command in self.responses:
-                return 'Command already exists! Delete the command first using !delcmd {}'.format(command)
+                if command in self.responses:
+                    return 'Command already exists! Delete the command first using !delcmd {}'.format(command)
 
-            response = str(" ".join(messagesplit[1:]))
-            self.responses[command] = response
-            self.save_file()
-            return '"{}" command added to return "{}"'.format(command, response)
-        except Exception as e:
-            helper.logmessage('Command Addition Error: {} | Message: {}'.format(str(e), message))
-            return 'Could not add command!'
+                if 'addcmd' in command or len(command) < 1:
+                    return 'good try'
+
+                response = str(" ".join(messagesplit[1:]))
+                response = helper.cleanlines(response)
+                self.responses[command] = response
+                self.save_file()
+                return '"{}" command added to return "{}"'.format(command, response)
+            except Exception as e:
+                helper.logmessage('Command Addition Error: {} | Message: {}'.format(str(e), message))
+                return 'Could not add command!'
+        else:
+            return 'GOOD TRY'
 
     def del_command(self, fbid, message):
         if fbid in config.adminfbids:
             command = str(helper.parsemessage(message).split(' ')[0]).lower()
+            command = "".join(filter(str.isalnum, command))
             if command in self.responses:
                 try:
                     del self.responses[command]
